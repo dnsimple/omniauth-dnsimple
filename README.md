@@ -1,8 +1,6 @@
 # Omniauth::Dnsimple
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/omniauth/dnsimple`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+[DNSimple](https://dnsimple.com) strategy for [OmniAuth](https://github.com/omniauth/omniauth).
 
 ## Installation
 
@@ -22,15 +20,43 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You need to create a DNSimple application. The application has a _client id_ and _client secret_.
+
+Use DNSimple strategy with `OmniAuth::Builder` in your [Rack](https://rack.github.io) middleware stack.
+
+```ruby
+use OmniAuth::Builder do
+  provider :dnsimple, ENV['DNSIMPLE_CLIENT_ID'], ENV['DNSIMPLE_CLIENT_SECRET']
+end
+```
+
+### Sandbox
+
+If we pass `sandbox: true`, the strategy will use the [DNSimple sandbox](https://developer.dnsimple.com/sandbox/) environment.
+
+```ruby
+use OmniAuth::Builder do
+  provider :dnsimple, ENV['DNSIMPLE_CLIENT_ID'], ENV['DNSIMPLE_CLIENT_SECRET'],
+           sandbox: ENV['DNSIMPLE_SANDBOX']
+end
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Clone the repository and install the dependencies:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+git clone https://github.com/dnsimple/omniauth-dnsimple.git
+cd omniauth-dnsimple
+bundle
+```
+
+Run the tests with:
+
+```
+bundle exec rake
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/omniauth-dnsimple.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/dnsimple/omniauth-dnsimple.
