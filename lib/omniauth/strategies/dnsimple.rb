@@ -43,13 +43,11 @@ module OmniAuth
 
       def initialize(app, *args, &block)
         super
+        return unless sandbox?(args)
 
-        opts = args.last
-        if opts && opts[:sandbox] # rubocop:disable Style/GuardClause
-          options.client_options.site          = CLIENT_OPTIONS[:sandbox][:site]
-          options.client_options.authorize_url = CLIENT_OPTIONS[:sandbox][:authorize_url]
-          options.client_options.token_url     = CLIENT_OPTIONS[:sandbox][:token_url]
-        end
+        options.client_options.site          = CLIENT_OPTIONS[:sandbox][:site]
+        options.client_options.authorize_url = CLIENT_OPTIONS[:sandbox][:authorize_url]
+        options.client_options.token_url     = CLIENT_OPTIONS[:sandbox][:token_url]
       end
 
       def callback_url
@@ -71,6 +69,11 @@ module OmniAuth
       end
 
       protected
+
+      def sandbox?(args)
+        opts = args.last
+        opts && [true, "true"].include?(opts[:sandbox])
+      end
 
       def build_access_token # rubocop:disable Metrics/AbcSize
         verifier = request.params['code']
