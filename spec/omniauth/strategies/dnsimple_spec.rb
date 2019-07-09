@@ -40,8 +40,8 @@ RSpec.describe OmniAuth::Strategies::Dnsimple do
           client_options: {
             site: "https://api.dnsimple.test",
             authorize_url: "https://dnsimple.test/oauth/authorize",
-            token_url: "https://api.dnsimple.test/v2/oauth/access_token"
-          }
+            token_url: "https://api.dnsimple.test/v2/oauth/access_token",
+          },
         }
       end
 

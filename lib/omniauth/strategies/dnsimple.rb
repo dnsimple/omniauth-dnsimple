@@ -5,23 +5,23 @@ module OmniAuth
     class Dnsimple < OmniAuth::Strategies::OAuth2
       CLIENT_OPTIONS = {
         production: {
-          site:          'https://api.dnsimple.com',
+          site: 'https://api.dnsimple.com',
           authorize_url: 'https://dnsimple.com/oauth/authorize',
-          token_url:     'https://api.dnsimple.com/v2/oauth/access_token'
+          token_url: 'https://api.dnsimple.com/v2/oauth/access_token',
         },
         sandbox: {
-          site:          'https://api.sandbox.dnsimple.com',
+          site: 'https://api.sandbox.dnsimple.com',
           authorize_url: 'https://sandbox.dnsimple.com/oauth/authorize',
-          token_url:     'https://api.sandbox.dnsimple.com/v2/oauth/access_token'
-        }
+          token_url: 'https://api.sandbox.dnsimple.com/v2/oauth/access_token',
+        },
       }.freeze
 
       option :name, 'dnsimple'
 
       option :client_options,
-             site:          CLIENT_OPTIONS[:production][:site],
+             site: CLIENT_OPTIONS[:production][:site],
              authorize_url: CLIENT_OPTIONS[:production][:authorize_url],
-             token_url:     CLIENT_OPTIONS[:production][:token_url]
+             token_url: CLIENT_OPTIONS[:production][:token_url]
 
       uid do
         raw_info.fetch('id')
@@ -29,15 +29,15 @@ module OmniAuth
 
       info do
         {
-          type:            raw_info['type'],
-          email:           raw_info['email'],
-          plan_identifier: raw_info['plan_identifier']
+          type: raw_info['type'],
+          email: raw_info['email'],
+          plan_identifier: raw_info['plan_identifier'],
         }
       end
 
       extra do
         {
-          'raw_info' => raw_info
+          'raw_info' => raw_info,
         }
       end
 
@@ -57,8 +57,8 @@ module OmniAuth
       def raw_info
         @raw_info ||= begin
           data = JSON.parse(
-            access_token.get('/v2/whoami').body
-          )['data']
+              access_token.get('/v2/whoami').body
+            )['data']
 
           if data.key?('user') && !data['user'].nil?
             data['user'].merge('type' => 'user')
@@ -75,11 +75,11 @@ module OmniAuth
         opts && [true, "true"].include?(opts[:sandbox])
       end
 
-      def build_access_token # rubocop:disable Metrics/AbcSize
+      def build_access_token
         verifier = request.params['code']
         params   = { redirect_uri: callback_url,
-                     state: request.params['state'] }
-                   .merge(token_params.to_hash(symbolize_keys: true))
+                     state: request.params['state'], }
+            .merge(token_params.to_hash(symbolize_keys: true))
 
         client.auth_code.get_token(verifier, params,
                                    deep_symbolize(options.auth_token_params))

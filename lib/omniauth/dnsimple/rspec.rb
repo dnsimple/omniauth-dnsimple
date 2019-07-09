@@ -4,15 +4,15 @@ require "omniauth"
 module OmniAuth
   module Dnsimple
     module RSpec
-      def self.included(spec) # rubocop:disable Metrics/MethodLength
+      def self.included(spec)
         spec.class_eval do
           let(:successful_params) do
             Hash[
-              type:            "account",
+              type: "account",
               plan_identifier: "dnsimple-professional",
-              uid:             Random.rand(10_000_000),
-              email:           "user@#{SecureRandom.uuid}.test",
-              token:           SecureRandom.hex(32),
+              uid: Random.rand(10_000_000),
+              email: "user@#{SecureRandom.uuid}.test",
+              token: SecureRandom.hex(32),
             ]
           end
         end
@@ -22,21 +22,19 @@ module OmniAuth
 
       PROVIDER = :dnsimple
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
       def omniauth_successful_signup
         params = Hash[
           "omniauth.auth" => {
             "provider" => PROVIDER.to_s,
-            "uid"      => successful_params.fetch(:uid),
-            "info"     => {
-              "type"            => successful_params.fetch(:type),
+            "uid" => successful_params.fetch(:uid),
+            "info" => {
+              "type" => successful_params.fetch(:type),
               "plan_identifier" => successful_params.fetch(:plan_identifier),
-              "email"           => successful_params.fetch(:email)
+              "email" => successful_params.fetch(:email),
             },
             "credentials" => {
-              "token" => successful_params.fetch(:token)
-            }
+              "token" => successful_params.fetch(:token),
+            },
           }
         ]
 
@@ -44,8 +42,6 @@ module OmniAuth
           omniauth_mock_auth data
         end
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
 
       def omniauth_failing_signup
         omniauth_mock_auth :invalid_credentials

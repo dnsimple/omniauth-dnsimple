@@ -1,0 +1,36 @@
+inherit_from:
+  - .rubocop_dnsimple.yml
+
+require: rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - 'enom.gemspec'
+    # Exclude vendor folder as it
+    # causes troubles on Travis
+    - 'vendor/**/*'
+
+Performance/RedundantMerge:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+
+# This is a great goal, but it's almost unreachable.
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Exclude:
+    - 'Rakefile'
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'lib/enom/actions/**/*'
+    - 'lib/enom/structs/**/*'
+
+Style/GuardClause:
+  Enabled: false
+  MinBodyLength: 10
